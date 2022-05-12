@@ -1,4 +1,24 @@
 class GameState
+  @@game_state = [
+    [nil, nil, nil, nil, nil, nil],
+    [nil, nil, nil, nil, nil, nil],
+    [nil, nil, nil, nil, nil, nil],
+    [nil, nil, nil, nil, nil, nil],
+    [nil, nil, nil, nil, nil, nil],
+    [nil, nil, nil, nil, nil, nil],
+    [nil, nil, nil, nil, nil, nil]
+  ]
+  @@current_player = :red
+
+
+  def self.game_state
+    @@game_state
+  end
+
+  def self.current_player
+    @@current_player
+  end
+
   def self.modify_board_state(column_num)
     deepest_nil_row = nil
     # game_state.each_with_index do |row, i|
@@ -11,38 +31,9 @@ class GameState
     # end
   end
 
-  def self.game_state
-    @@game_state ||= new_game_state
-  end
-
-  def self.new_game_state
-    [
-      [nil, nil, nil, nil, :red, :black],
-      [nil, nil, nil, nil, nil, nil],
-      [nil, nil, nil, nil, nil, nil],
-      [nil, nil, nil, nil, nil, nil],
-      [nil, nil, nil, nil, nil, nil],
-      [nil, nil, nil, nil, nil, nil],
-      [nil, nil, nil, nil, nil, nil]
-    ]
-  end
-
-  private
-
-  def self.game_state
-    game_state = cookies[:game_state] || new_game_state
-  end
-
-  def self.current_player
-    current_player = cookies[:player] || :red
-  end
-
   def self.flip_player
-    if current_player == :red
-      current_player = :black
-    else
-      current_player = :red
-    end
+    @@current_player = :black if @@current_player == :red
+    @@current_player = :red if @@current_player == :black
   end
 
   def self.new_game_state
@@ -55,14 +46,6 @@ class GameState
       [0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, :red, :black]
     ].to_json
-  end
-
-  def self.current_player
-    # current_player = cookies[:player] || :red
-  end
-
-  def self.game_state
-    # game_state = cookies[:game_state] || new_game_state
   end
 
   def self.check_for_win_condition
