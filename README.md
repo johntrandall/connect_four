@@ -1,24 +1,15 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
+TODO: 
 
-* Ruby version
+# (build visual game board)
 
-* System dependencies
+add 7 buttons
+add player turn indicator, and track whos turn it us
+make button drop colored chits
 
-* Configuration
+persist all this turn by turn
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+NTH: indicates the win or the end
+NTH: reset button
