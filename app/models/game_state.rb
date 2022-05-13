@@ -10,7 +10,6 @@ class GameState
   ]
   @@current_player = :red
 
-
   def self.game_state
     @@game_state
   end
@@ -25,10 +24,8 @@ class GameState
       if row[column_num].nil?
         deepest_nil_row = i
       end
-
-      # drop it in
-      game_state[deepest_nil_row][column_num] = current_player
     end
+    game_state[deepest_nil_row][column_num] = current_player
   end
 
   def self.flip_player

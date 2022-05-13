@@ -18,7 +18,97 @@ describe GameState do
   end
 
   describe ".modify_board_state" do
-    pending('already wotking in GUI, TODO: backfill test here')
+    it 'modifies game state by dropping a chit in the column and respecting gravity' do
+      expect { GameState.modify_board_state(0) }
+        .to change { GameState.game_state }
+              .from([
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil]
+                    ])
+              .to([
+                    [nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil],
+                    [:red, nil, nil, nil, nil, nil]
+                  ])
+
+      expect { GameState.modify_board_state(0) }
+        .to change { GameState.game_state }
+              .from([
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil],
+                      [:red, nil, nil, nil, nil, nil]
+                    ])
+              .to([
+                    [nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil],
+                    [:red, nil, nil, nil, nil, nil],
+                    [:red, nil, nil, nil, nil, nil]
+                  ])
+
+      expect { GameState.modify_board_state(2) }
+        .to change { GameState.game_state }
+              .from([
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil],
+                      [:red, nil, nil, nil, nil, nil],
+                      [:red, nil, nil, nil, nil, nil]
+                    ])
+              .to([
+                    [nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil],
+                    [:red, nil, nil, nil, nil, nil],
+                    [:red, nil, :red, nil, nil, nil]
+                  ])
+
+    end
+
+    it 'drops the correct color Chit based on .current_player' do
+      pending("This fails due to test pollution. TODO: Must avoid using class variables or clean-up properly")
+      expect(GameState).to receive(:current_player).and_return(:unicorn)
+
+      expect { GameState.modify_board_state(0) }
+        .to change { GameState.game_state }
+              .from([
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil]
+                    ])
+              .to([
+                    [nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil],
+                    [:unicorn, nil, nil, nil, nil, nil]
+                  ])
+    end
   end
 
   describe ".flip_player" do
