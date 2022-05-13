@@ -33,11 +33,11 @@ class GameState
     @@current_player = :red if @@current_player == :black
   end
 
-  def self.check_for_win_condition
+  def self.winner?
     check_for_horizontal_win || check_for_vertical_win || check_for_diagonal_win
   end
 
-  def self.check_for_draw_condition
+  def self.draw?
     return false if @game_state.flatten.include?(0)
     return true
   end

@@ -3,8 +3,8 @@ require 'rails_helper'
 describe GameController do
   describe '#index' do
     it 'renders' do
-      expect(GameState).to receive(:check_for_win_condition)
-      expect(GameState).to receive(:check_for_draw_condition)
+      expect(GameState).to receive(:winner?)
+      expect(GameState).to receive(:draw?)
 
       get :index
 
@@ -14,8 +14,8 @@ describe GameController do
     describe "GameState permutations" do
       context 'GameState indicates a winner' do
         it "assigns red-win message" do
-          expect(GameState).to receive(:check_for_win_condition).and_return(:red)
-          expect(GameState).not_to receive(:check_for_draw_condition)
+          expect(GameState).to receive(:winner?).and_return(:red)
+          expect(GameState).not_to receive(:draw?)
 
           get :index
 
@@ -26,8 +26,8 @@ describe GameController do
 
       context 'GameState indicates a draw condition' do
         it "assigns draw message" do
-          expect(GameState).to receive(:check_for_win_condition).and_return(nil)
-          expect(GameState).to receive(:check_for_draw_condition).and_return(true)
+          expect(GameState).to receive(:winner?).and_return(nil)
+          expect(GameState).to receive(:draw?).and_return(true)
 
           get :index
 
@@ -38,8 +38,8 @@ describe GameController do
 
       context 'GameState indicates a neither winner nor a draw condition' do
         it "assigns red-win message" do
-          expect(GameState).to receive(:check_for_win_condition).and_return(nil)
-          expect(GameState).to receive(:check_for_draw_condition).and_return(false)
+          expect(GameState).to receive(:winner?).and_return(nil)
+          expect(GameState).to receive(:draw?).and_return(false)
 
           get :index
 

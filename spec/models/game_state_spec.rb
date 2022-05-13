@@ -122,7 +122,7 @@ describe GameState do
         expect(GameState).to receive(:check_for_vertical_win).and_return(false)
         expect(GameState).to receive(:check_for_diagonal_win).and_return(false)
 
-        expect(GameState.check_for_win_condition).to eq false
+        expect(GameState.winner?).to eq false
       end
     end
 
@@ -130,7 +130,7 @@ describe GameState do
       it 'returns winner' do
         expect(GameState).to receive(:check_for_horizontal_win).and_return(:red)
 
-        expect(GameState.check_for_win_condition).to eq :red
+        expect(GameState.winner?).to eq :red
       end
     end
 
@@ -139,7 +139,7 @@ describe GameState do
         expect(GameState).to receive(:check_for_horizontal_win).and_return(false)
         expect(GameState).to receive(:check_for_vertical_win).and_return(:blue)
 
-        expect(GameState.check_for_win_condition).to eq :blue
+        expect(GameState.winner?).to eq :blue
       end
     end
 
@@ -149,7 +149,7 @@ describe GameState do
         expect(GameState).to receive(:check_for_vertical_win).and_return(false)
         expect(GameState).to receive(:check_for_diagonal_win).and_return(:red)
 
-        expect(GameState.check_for_win_condition).to eq :red
+        expect(GameState.winner?).to eq :red
       end
     end
   end
