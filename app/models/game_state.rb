@@ -50,6 +50,13 @@ class GameState
     return true
   end
 
+  def self.column_full?(col_num)
+    game_state = self.get_game_state
+    return game_state.all? do |row|
+      row[col_num].present?
+    end
+  end
+
   private
 
   def self.set_current_player(value)

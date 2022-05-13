@@ -192,6 +192,24 @@ describe GameState do
     pending("TODO - write tests")
   end
 
+  describe "column_full?" do
+    it "returns true/false accurately" do
+      allow(GameState)
+        .to receive(:get_game_state)
+              .and_return [
+                            [nil, :x, nil, nil, nil, nil, nil],
+                            [nil, :x, nil, nil, nil, nil, nil],
+                            [nil, :x, nil, nil, nil, nil, nil],
+                            [nil, :x, nil, nil, nil, nil, nil],
+                            [:black, :black, nil, nil, nil, nil, nil],
+                            [nil, :red, nil, nil, nil, nil, nil]
+                          ]
+      expect(GameState.column_full?(0)).to eq false
+      expect(GameState.column_full?(1)).to eq true
+      expect(GameState.column_full?(2)).to eq false
+    end
+  end
+
   describe 'private' do
 
     describe '#horizontal_winner' do
