@@ -13,21 +13,10 @@ class GameState
     end
   end
 
-  def self.patch_game_state(row_num, col_num, current_player)
-    gs_nested_array = self.get_game_state
-    gs_nested_array[row_num][col_num] = current_player
-    Rails.cache.write(:get_game_state, gs_nested_array)
-  end
-
   def self.get_current_player
     Rails.cache.fetch (:current_player) do
       :red
     end
-  end
-
-  def self.set_current_player(value)
-    Rails.cache.write(:current_player, value)
-    value
   end
 
   def self.modify_board_state(column_num)
@@ -61,6 +50,17 @@ class GameState
   end
 
   private
+
+  def self.set_current_player(value)
+    Rails.cache.write(:current_player, value)
+    value
+  end
+
+  def self.patch_game_state(row_num, col_num, current_player)
+    gs_nested_array = self.get_game_state
+    gs_nested_array[row_num][col_num] = current_player
+    Rails.cache.write(:get_game_state, gs_nested_array)
+  end
 
   def self.horizontal_winner
     get_game_state.each do |row|
