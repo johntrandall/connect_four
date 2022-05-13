@@ -1,6 +1,27 @@
 require 'rails_helper'
 
+
 describe GameState do
+  let(:memory_store) { ActiveSupport::Cache.lookup_store(:memory_store) }
+  let(:cache) { Rails.cache }
+
+  before do
+    allow(Rails).to receive(:cache).and_return(memory_store)
+    Rails.cache.clear
+  end
+
+  it "Sanity Test: prove that caching is enabled in test" do
+    expect(Rails.cache.read(:current_player)).to eq nil
+
+    expect(GameState.get_current_player).to eq :red
+    expect(Rails.cache.read(:current_player)).to eq :red
+    expect(GameState.get_current_player).to eq :red
+
+    expect(GameState.set_current_player(:unicorn)).to eq :unicorn
+    expect(Rails.cache.read(:current_player)).to eq :unicorn
+    expect(GameState.get_current_player).to eq :unicorn
+  end
+
 
   describe "starting state" do
     describe ".game_state" do
@@ -12,7 +33,7 @@ describe GameState do
 
     describe ".current_player" do
       it 'returns :red' do
-        expect(GameState.current_player).to eq :red
+        expect(GameState.get_current_player).to eq :red
       end
     end
   end
@@ -85,8 +106,7 @@ describe GameState do
     end
 
     it 'drops the correct color Chit based on .current_player' do
-      pending("This fails due to test pollution. TODO: Must avoid using class variables or clean-up properly")
-      expect(GameState).to receive(:current_player).and_return(:unicorn)
+      expect(GameState).to receive(:get_current_player).and_return(:unicorn)
 
       expect { GameState.modify_board_state(0) }
         .to change { GameState.game_state }
@@ -112,7 +132,18 @@ describe GameState do
   end
 
   describe ".flip_player" do
-    pending('already wotking in GUI, TODO: backfill test here')
+    it 'flips .current_player back and forth from red to black' do
+      expect(GameState.get_current_player).to eq :red
+      expect { GameState.flip_player }
+        .to change { GameState.get_current_player }
+              .from(:red).to(:black)
+      expect { GameState.flip_player }
+        .to change { GameState.get_current_player }
+              .from(:black).to(:red)
+      expect { GameState.flip_player }
+        .to change { GameState.get_current_player }
+              .from(:red).to(:black)
+    end
   end
 
   describe ".winner?" do

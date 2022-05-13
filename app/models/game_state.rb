@@ -8,14 +8,20 @@ class GameState
     [nil, nil, nil, nil, nil, nil],
     [nil, nil, nil, nil, nil, nil]
   ]
-  @@current_player = :red
 
   def self.game_state
     @@game_state
   end
 
-  def self.current_player
-    @@current_player
+  def self.get_current_player
+    Rails.cache.fetch (:current_player) do
+      :red
+    end
+  end
+
+  def self.set_current_player(value)
+    Rails.cache.write(:current_player, value)
+    value
   end
 
   def self.modify_board_state(column_num)
@@ -25,12 +31,18 @@ class GameState
         deepest_nil_row = i
       end
     end
-    game_state[deepest_nil_row][column_num] = current_player
+    game_state[deepest_nil_row][column_num] = get_current_player
   end
 
   def self.flip_player
-    @@current_player = :black if @@current_player == :red
-    @@current_player = :red if @@current_player == :black
+    if self.get_current_player == :red
+      self.set_current_player(:black)
+      return :black
+    end
+    if self.get_current_player == :black
+      self.set_current_player(:red)
+      return :red
+    end
   end
 
   def self.winner?
