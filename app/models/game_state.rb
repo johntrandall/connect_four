@@ -88,6 +88,66 @@ class GameState
   end
 
   def self.diagonal_winner
-    raise 'TODO: check_for_diagonal_win'
+    game_state = get_game_state
+    down_right_diagonal_win_start_points = [
+      [0, 0],
+      [0, 1],
+      [0, 2],
+      [0, 3],
+      [1, 0],
+      [1, 1],
+      [1, 2],
+      [1, 3],
+      [2, 0],
+      [2, 1],
+      [2, 2],
+      [2, 3],
+    ]
+    up_right_diagonal_win_start_points = [
+      [3, 0],
+      [3, 1],
+      [3, 2],
+      [3, 3],
+      [4, 0],
+      [4, 1],
+      [4, 2],
+      [4, 3],
+      [5, 0],
+      [5, 1],
+      [5, 2],
+      [5, 3],
+    ]
+    down_right_diagonal_win_start_points.each do |coordinates|
+      x = coordinates[0]
+      y = coordinates[1]
+      return :black if self.win_down_right_from_here?(x, y, :black, game_state)
+      return :red if self.win_down_right_from_here?(x, y, :red, game_state)
+    end
+    up_right_diagonal_win_start_points.each do |coordinates|
+      x = coordinates[0]
+      y = coordinates[1]
+      return :black if win_up_right_from_here?(x, y, :black, game_state)
+      return :red if win_up_right_from_here?(x, y, :red, game_state)
+    end
+    nil
   end
+
+  def self.win_down_right_from_here?(x, y, color, game_state)
+    if game_state[x][y] == color &&
+      game_state[x+1][y+1] == color &&
+      game_state[x+2][y+2] == color &&
+      game_state[x+3][y+3] == color
+      return true
+    end
+  end
+
+  def self.win_up_right_from_here?(x, y, color, game_state)
+    if game_state[x][y] == color &&
+      game_state[x-1][y+1] == color &&
+      game_state[x-2][y+2] == color &&
+      game_state[x-3][y+3] == color
+      return true
+    end
+  end
+
 end
