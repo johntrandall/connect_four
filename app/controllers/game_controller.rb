@@ -1,15 +1,15 @@
 class GameController < ApplicationController
 
   def index
-    if winner = GameState.winner?
-      @message = "#{winner.to_s.upcase} won!"
-      return
-    end
+    @game_state = GameState.get_game_state
+    @current_player = GameState.get_current_player
 
-    if GameState.draw?
-      @message = "Draw!"
-      return
-    end
+    @message = if winner = GameState.winner?
+                 "#{winner.to_s.upcase} won!"
+               elsif GameState.draw?
+                 "Draw!"
+               end
+
   end
 end
 

@@ -45,7 +45,8 @@ class GameState
   end
 
   def self.draw?
-    return false if @game_state.flatten.include?(0)
+    game_state = get_game_state
+    return false if game_state.flatten.include?(0)
     return true
   end
 
