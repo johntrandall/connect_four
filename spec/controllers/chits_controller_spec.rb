@@ -1,9 +1,12 @@
 require 'rails_helper'
 
 describe ChitsController do
+
   it 'redirects back to root' do
-    allow(GameState).to receive(:modify_board_state)
-    allow(GameState).to receive(:flip_player)
+    expect(GameState).to receive(:new).and_return(mock_game_state = GameState.new)
+
+    expect(mock_game_state).to receive(:modify_board_state)
+    expect(mock_game_state).to receive(:flip_player)
 
     post :create
 
@@ -12,8 +15,10 @@ describe ChitsController do
 
   describe '#create' do
     it "calls GameState.modify_board_state and .flip_player" do
-      expect(GameState).to receive(:modify_board_state)
-      expect(GameState).to receive(:flip_player)
+      expect(GameState).to receive(:new).and_return(mock_game_state = GameState.new)
+
+      expect(mock_game_state).to receive(:modify_board_state)
+      expect(mock_game_state).to receive(:flip_player)
 
       post :create
     end

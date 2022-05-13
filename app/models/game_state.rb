@@ -11,57 +11,57 @@ class GameState
 
   STARTING_PLAYER = :red
 
-  def self.reset
+  def reset
     Rails.cache.write(:current_player, STARTING_PLAYER)
     Rails.cache.write(:get_game_state, STARTING_GAME_STATE)
   end
 
-  def self.get_game_state
+  def get_game_state
     Rails.cache.fetch (:get_game_state) do
       STARTING_GAME_STATE
     end
   end
 
-  def self.get_current_player
+  def get_current_player
     Rails.cache.fetch (:current_player) do
       STARTING_PLAYER
     end
   end
 
-  def self.modify_board_state(column_num)
+  def modify_board_state(column_num)
     deepest_nil_row = nil
     get_game_state.each_with_index do |row, i|
       if row[column_num].nil?
         deepest_nil_row = i
       end
     end
-    self.patch_game_state(deepest_nil_row, column_num, get_current_player)
+    patch_game_state(deepest_nil_row, column_num, get_current_player)
   end
 
-  def self.flip_player
-    if self.get_current_player == :red
-      self.set_current_player(:black)
+  def flip_player
+    if get_current_player == :red
+      set_current_player(:black)
       return :black
     end
-    if self.get_current_player == :black
-      self.set_current_player(:red)
+    if get_current_player == :black
+      set_current_player(:red)
       return :red
     end
   end
 
-  def self.winner?
+  def winner?
     game_state = get_game_state
     horizontal_winner(game_state) || vertical_winner(game_state) || diagonal_winner(game_state)
   end
 
-  def self.draw?
+  def draw?
     game_state = get_game_state
     return false if game_state.flatten.include?(nil)
     return true
   end
 
-  def self.column_full?(col_num)
-    game_state = self.get_game_state
+  def column_full?(col_num)
+    game_state = get_game_state
     return game_state.all? do |row|
       row[col_num].present?
     end
@@ -69,18 +69,18 @@ class GameState
 
   private
 
-  def self.set_current_player(value)
+  def set_current_player(value)
     Rails.cache.write(:current_player, value)
     value
   end
 
-  def self.patch_game_state(row_num, col_num, current_player)
-    gs_nested_array = self.get_game_state
+  def patch_game_state(row_num, col_num, current_player)
+    gs_nested_array = get_game_state
     gs_nested_array[row_num][col_num] = current_player
     Rails.cache.write(:get_game_state, gs_nested_array)
   end
 
-  def self.horizontal_winner(game_state)
+  def horizontal_winner(game_state)
     game_state.each do |row|
       return :black if winner_on_row?(row, :black)
       return :red if winner_on_row?(row, :red)
@@ -88,15 +88,15 @@ class GameState
     nil
   end
 
-  def self.vertical_winner(game_state)
+  def vertical_winner(game_state)
     game_state.transpose.each do |row|
-      return :black if self.winner_on_row?(row, :black)
-      return :red if self.winner_on_row?(row, :red)
+      return :black if winner_on_row?(row, :black)
+      return :red if winner_on_row?(row, :red)
     end
     nil
   end
 
-  def self.winner_on_row?(row, color)
+  def winner_on_row?(row, color)
     counter = 0
     row.each do |slot|
       if slot == color
@@ -109,7 +109,7 @@ class GameState
     nil
   end
 
-  def self.diagonal_winner(game_state)
+  def diagonal_winner(game_state)
     down_right_diagonal_win_start_points = [
       [0, 0],
       [0, 1],
@@ -141,8 +141,8 @@ class GameState
     down_right_diagonal_win_start_points.each do |coordinates|
       x = coordinates[0]
       y = coordinates[1]
-      return :black if self.win_down_right_from_here?(x, y, :black, game_state)
-      return :red if self.win_down_right_from_here?(x, y, :red, game_state)
+      return :black if win_down_right_from_here?(x, y, :black, game_state)
+      return :red if win_down_right_from_here?(x, y, :red, game_state)
     end
     up_right_diagonal_win_start_points.each do |coordinates|
       x = coordinates[0]
@@ -153,7 +153,7 @@ class GameState
     nil
   end
 
-  def self.win_down_right_from_here?(x, y, color, game_state)
+  def win_down_right_from_here?(x, y, color, game_state)
     if game_state[x][y] == color &&
       game_state[x + 1][y + 1] == color &&
       game_state[x + 2][y + 2] == color &&
@@ -162,7 +162,7 @@ class GameState
     end
   end
 
-  def self.win_up_right_from_here?(x, y, color, game_state)
+  def win_up_right_from_here?(x, y, color, game_state)
     if game_state[x][y] == color &&
       game_state[x - 1][y + 1] == color &&
       game_state[x - 2][y + 2] == color &&
