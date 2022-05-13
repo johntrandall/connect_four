@@ -5,9 +5,14 @@ class GamesController < ApplicationController
     @board_state = @game_state.get_game_state
     @current_player = @game_state.get_current_player
 
-    @message = if winner = @game_state.winner?
+    winner = @game_state.winner?
+    draw = @game_state.draw?
+
+    @show_buttons = true unless (winner || draw)
+
+    @message = if winner
                  "#{winner.to_s.upcase} won!"
-               elsif @game_state.draw?
+               elsif draw
                  "Draw!"
                end
   end

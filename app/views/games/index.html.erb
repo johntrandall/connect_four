@@ -21,28 +21,30 @@
 </style>
 
 <table>
-  <tr class="button-row">
-    <td center>
-      <%= button_to("drop", chits_path(column_num: 0)) unless @game_state.column_full?(0) %>
-    </td>
-    <td>
-      <%= button_to("drop", chits_path(column_num: 1)) unless @game_state.column_full?(1) %>
-    </td>
-    <td>
-      <%= button_to("drop", chits_path(column_num: 2)) unless @game_state.column_full?(2) %>
-    </td>
-    <td>
-      <%= button_to("drop", chits_path(column_num: 3)) unless @game_state.column_full?(3) %>
-    </td>
-    <td>
-      <%= button_to("drop", chits_path(column_num: 4)) unless @game_state.column_full?(4) %>
-    </td>
-    <td>
-      <%= button_to("drop", chits_path(column_num: 5)) unless @game_state.column_full?(5) %>
-    </td>
-    <td>
-      <%= button_to("drop", chits_path(column_num: 6)) unless @game_state.column_full?(6) %>
-    </td>
+  <% if @show_buttons %>
+    <tr class="button-row">
+      <td center>
+        <%= button_to("drop", chits_path(column_num: 0)) unless @game_state.column_full?(0) %>
+      </td>
+      <td>
+        <%= button_to("drop", chits_path(column_num: 1)) unless @game_state.column_full?(1) %>
+      </td>
+      <td>
+        <%= button_to("drop", chits_path(column_num: 2)) unless @game_state.column_full?(2) %>
+      </td>
+      <td>
+        <%= button_to("drop", chits_path(column_num: 3)) unless @game_state.column_full?(3) %>
+      </td>
+      <td>
+        <%= button_to("drop", chits_path(column_num: 4)) unless @game_state.column_full?(4) %>
+      </td>
+      <td>
+        <%= button_to("drop", chits_path(column_num: 5)) unless @game_state.column_full?(5) %>
+      </td>
+      <td>
+        <%= button_to("drop", chits_path(column_num: 6)) unless @game_state.column_full?(6) %>
+      </td>
+  <% end %>
   </tr>
 
   <style>
