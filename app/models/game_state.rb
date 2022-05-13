@@ -34,7 +34,7 @@ class GameState
   end
 
   def self.winner?
-    check_for_horizontal_win || check_for_vertical_win || check_for_diagonal_win
+    horizontal_winner || vertical_winner || diagonal_winner
   end
 
   def self.draw?
@@ -44,14 +44,14 @@ class GameState
 
   private
 
-  def self.check_for_horizontal_win
+  def self.horizontal_winner
     game_state.each do |row|
-      return :black if win_row(row, :black)
-      return :red if win_row(row, :red)
+      return :black if winner_on_row?(row, :black)
+      return :red if winner_on_row?(row, :red)
     end
   end
 
-  def self.win_row(row, color)
+  def self.winner_on_row?(row, color)
     counter = 0
     row.each do |slot|
       if slot == color
@@ -63,14 +63,14 @@ class GameState
     return color if counter >= 4
   end
 
-  def self.check_for_vertical_win
+  def self.vertical_winner
     game_state.transpose.each do |row|
       return :black if win_row?(row, :black)
       return :red if win_row?(row, :red)
     end
   end
 
-  def self.check_for_diagonal_win
+  def self.diagonal_winner
     raise 'TODO: check_for_diagonal_win'
   end
 end

@@ -115,20 +115,20 @@ describe GameState do
     pending('already wotking in GUI, TODO: backfill test here')
   end
 
-  describe ".check_for_win_condition" do
+  describe ".winner?" do
     context "no win" do
       it 'returns nil' do
-        expect(GameState).to receive(:check_for_horizontal_win).and_return(false)
-        expect(GameState).to receive(:check_for_vertical_win).and_return(false)
-        expect(GameState).to receive(:check_for_diagonal_win).and_return(false)
+        expect(GameState).to receive(:horizontal_winner).and_return(nil)
+        expect(GameState).to receive(:vertical_winner).and_return(nil)
+        expect(GameState).to receive(:diagonal_winner).and_return(nil)
 
-        expect(GameState.winner?).to eq false
+        expect(GameState.winner?).to eq nil
       end
     end
 
     context "horizontal win" do
       it 'returns winner' do
-        expect(GameState).to receive(:check_for_horizontal_win).and_return(:red)
+        expect(GameState).to receive(:horizontal_winner).and_return(:red)
 
         expect(GameState.winner?).to eq :red
       end
@@ -136,8 +136,8 @@ describe GameState do
 
     context "veritcal win" do
       it 'returns winner' do
-        expect(GameState).to receive(:check_for_horizontal_win).and_return(false)
-        expect(GameState).to receive(:check_for_vertical_win).and_return(:blue)
+        expect(GameState).to receive(:horizontal_winner).and_return(false)
+        expect(GameState).to receive(:vertical_winner).and_return(:blue)
 
         expect(GameState.winner?).to eq :blue
       end
@@ -145,9 +145,9 @@ describe GameState do
 
     context "diagonal win" do
       it 'returns winner' do
-        expect(GameState).to receive(:check_for_horizontal_win).and_return(false)
-        expect(GameState).to receive(:check_for_vertical_win).and_return(false)
-        expect(GameState).to receive(:check_for_diagonal_win).and_return(:red)
+        expect(GameState).to receive(:horizontal_winner).and_return(false)
+        expect(GameState).to receive(:vertical_winner).and_return(false)
+        expect(GameState).to receive(:diagonal_winner).and_return(:red)
 
         expect(GameState.winner?).to eq :red
       end
