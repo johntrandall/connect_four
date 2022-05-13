@@ -2,8 +2,8 @@ class GamesController < ApplicationController
 
   def index
     @game_state = GameState.new
-    @board_state = @game_state.get_game_state
-    @current_player = @game_state.get_current_player
+    @board_state = @game_state.board_state
+    @current_player = @game_state.current_player
 
     winner = @game_state.winner?
     draw = @game_state.draw?

@@ -13,16 +13,16 @@ class GameState
 
   def reset
     Rails.cache.write(:current_player, STARTING_PLAYER)
-    Rails.cache.write(:get_game_state, STARTING_GAME_STATE)
+    Rails.cache.write(:board_state, STARTING_GAME_STATE)
   end
 
-  def get_game_state
-    Rails.cache.fetch (:get_game_state) do
+  def board_state
+    Rails.cache.fetch (:board_state) do
       STARTING_GAME_STATE
     end
   end
 
-  def get_current_player
+  def current_player
     Rails.cache.fetch (:current_player) do
       STARTING_PLAYER
     end
@@ -30,38 +30,38 @@ class GameState
 
   def modify_board_state(column_num)
     deepest_nil_row = nil
-    get_game_state.each_with_index do |row, i|
+    board_state.each_with_index do |row, i|
       if row[column_num].nil?
         deepest_nil_row = i
       end
     end
-    patch_game_state(deepest_nil_row, column_num, get_current_player)
+    patch_game_state(deepest_nil_row, column_num, current_player)
   end
 
   def flip_player
-    if get_current_player == :red
+    if current_player == :red
       set_current_player(:black)
       return :black
     end
-    if get_current_player == :black
+    if current_player == :black
       set_current_player(:red)
       return :red
     end
   end
 
   def winner?
-    game_state = get_game_state
+    game_state = board_state
     horizontal_winner(game_state) || vertical_winner(game_state) || diagonal_winner(game_state)
   end
 
   def draw?
-    game_state = get_game_state
+    game_state = board_state
     return false if game_state.flatten.include?(nil)
     return true
   end
 
   def column_full?(col_num)
-    game_state = get_game_state
+    game_state = board_state
     return game_state.all? do |row|
       row[col_num].present?
     end
@@ -75,9 +75,9 @@ class GameState
   end
 
   def patch_game_state(row_num, col_num, current_player)
-    gs_nested_array = get_game_state
+    gs_nested_array = board_state
     gs_nested_array[row_num][col_num] = current_player
-    Rails.cache.write(:get_game_state, gs_nested_array)
+    Rails.cache.write(:board_state, gs_nested_array)
   end
 
   def horizontal_winner(game_state)

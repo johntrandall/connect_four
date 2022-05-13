@@ -13,24 +13,24 @@ describe GameState do
   it "Sanity Test: prove that caching is enabled in test" do
     expect(Rails.cache.read(:current_player)).to eq nil
 
-    expect(game_state.get_current_player).to eq :red
+    expect(game_state.current_player).to eq :red
     expect(Rails.cache.read(:current_player)).to eq :red
-    expect(game_state.get_current_player).to eq :red
+    expect(game_state.current_player).to eq :red
 
     expect(game_state.send(:set_current_player, :unicorn)).to eq :unicorn
     expect(Rails.cache.read(:current_player)).to eq :unicorn
-    expect(game_state.get_current_player).to eq :unicorn
+    expect(game_state.current_player).to eq :unicorn
   end
 
   describe "starting state" do
     describe ".get_game_state." do
       it 'returns an array with no pieces in it' do
-        expect(game_state.get_game_state).to be_a(Array)
-        expect(game_state.get_game_state.flatten.compact).to eq([])
+        expect(game_state.board_state).to be_a(Array)
+        expect(game_state.board_state.flatten.compact).to eq([])
       end
 
       it 'returns the starting state nested array of nils' do
-        expect(game_state.get_game_state).to eq(
+        expect(game_state.board_state).to eq(
                                                [
                                                  [nil, nil, nil, nil, nil, nil, nil],
                                                  [nil, nil, nil, nil, nil, nil, nil],
@@ -45,7 +45,7 @@ describe GameState do
 
     describe ".current_player" do
       it 'returns :red' do
-        expect(game_state.get_current_player).to eq :red
+        expect(game_state.current_player).to eq :red
       end
     end
   end
@@ -53,7 +53,7 @@ describe GameState do
   describe ".modify_board_state" do
     it 'modifies game state by dropping a chit in the column and respecting gravity' do
       expect { game_state.modify_board_state(0) }
-        .to change { game_state.get_game_state }
+        .to change { game_state.board_state }
               .from([
                       [nil, nil, nil, nil, nil, nil, nil],
                       [nil, nil, nil, nil, nil, nil, nil],
@@ -72,7 +72,7 @@ describe GameState do
                   ])
 
       expect { game_state.modify_board_state(0) }
-        .to change { game_state.get_game_state }
+        .to change { game_state.board_state }
               .from([
                       [nil, nil, nil, nil, nil, nil, nil],
                       [nil, nil, nil, nil, nil, nil, nil],
@@ -91,7 +91,7 @@ describe GameState do
                   ])
       #
       expect { game_state.modify_board_state(2) }
-        .to change { game_state.get_game_state }
+        .to change { game_state.board_state }
               .from([
                       [nil, nil, nil, nil, nil, nil, nil],
                       [nil, nil, nil, nil, nil, nil, nil],
@@ -112,10 +112,10 @@ describe GameState do
     end
 
     it 'drops the correct color Chit based on .current_player' do
-      expect(game_state).to receive(:get_current_player).and_return(:unicorn)
+      expect(game_state).to receive(:current_player).and_return(:unicorn)
 
       expect { game_state.modify_board_state(0) }
-        .to change { game_state.get_game_state }
+        .to change { game_state.board_state }
               .from([
                       [nil, nil, nil, nil, nil, nil, nil],
                       [nil, nil, nil, nil, nil, nil, nil],
@@ -137,15 +137,15 @@ describe GameState do
 
   describe ".flip_player" do
     it 'flips .current_player back and forth from red to black' do
-      expect(game_state.get_current_player).to eq :red
+      expect(game_state.current_player).to eq :red
       expect { game_state.flip_player }
-        .to change { game_state.get_current_player }
+        .to change { game_state.current_player }
               .from(:red).to(:black)
       expect { game_state.flip_player }
-        .to change { game_state.get_current_player }
+        .to change { game_state.current_player }
               .from(:black).to(:red)
       expect { game_state.flip_player }
-        .to change { game_state.get_current_player }
+        .to change { game_state.current_player }
               .from(:red).to(:black)
     end
   end
@@ -196,7 +196,7 @@ describe GameState do
   describe ".column_full?" do
     it "returns true/false accurately" do
       allow(game_state)
-        .to receive(:get_game_state)
+        .to receive(:board_state)
               .and_return [
                             [nil, :x, nil, nil, nil, nil, nil],
                             [nil, :x, nil, nil, nil, nil, nil],
@@ -215,7 +215,7 @@ describe GameState do
     it 'resets the board' do
       game_state.modify_board_state(2)
       expect { game_state.reset }.to change {
-        game_state.get_game_state }
+        game_state.board_state }
                                        .from([
                                                [nil, nil, nil, nil, nil, nil, nil],
                                                [nil, nil, nil, nil, nil, nil, nil],
