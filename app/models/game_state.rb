@@ -2,13 +2,12 @@ class GameState
   def self.get_game_state
     Rails.cache.fetch (:get_game_state) do
       [
-        [nil, nil, nil, nil, nil, nil],
-        [nil, nil, nil, nil, nil, nil],
-        [nil, nil, nil, nil, nil, nil],
-        [nil, nil, nil, nil, nil, nil],
-        [nil, nil, nil, nil, nil, nil],
-        [nil, nil, nil, nil, nil, nil],
-        [nil, nil, nil, nil, nil, nil]
+        [nil, nil, nil, nil, nil, nil, nil],
+        [nil, nil, nil, nil, nil, nil, nil],
+        [nil, nil, nil, nil, nil, nil, nil],
+        [nil, nil, nil, nil, nil, nil, nil],
+        [nil, nil, nil, nil, nil, nil, nil],
+        [nil, nil, nil, nil, nil, nil, nil]
       ]
     end
   end

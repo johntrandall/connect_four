@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-
 describe GameState do
   let(:memory_store) { ActiveSupport::Cache.lookup_store(:memory_store) }
   let(:cache) { Rails.cache }
@@ -22,12 +21,24 @@ describe GameState do
     expect(GameState.get_current_player).to eq :unicorn
   end
 
-
   describe "starting state" do
-    describe ".game_state" do
-      it 'returns an array with nothing in it' do
+    describe ".get_game_state" do
+      it 'returns an array with no pieces in it' do
         expect(GameState.get_game_state).to be_a(Array)
         expect(GameState.get_game_state.flatten.compact).to eq([])
+      end
+
+      it 'returns the starting state nested array of nils' do
+        expect(GameState.get_game_state).to eq(
+                                              [
+                                                [nil, nil, nil, nil, nil, nil, nil],
+                                                [nil, nil, nil, nil, nil, nil, nil],
+                                                [nil, nil, nil, nil, nil, nil, nil],
+                                                [nil, nil, nil, nil, nil, nil, nil],
+                                                [nil, nil, nil, nil, nil, nil, nil],
+                                                [nil, nil, nil, nil, nil, nil, nil]
+                                              ]
+                                            )
       end
     end
 
@@ -43,64 +54,58 @@ describe GameState do
       expect { GameState.modify_board_state(0) }
         .to change { GameState.get_game_state }
               .from([
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil]
+                      [nil, nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil, nil]
                     ])
               .to([
-                    [nil, nil, nil, nil, nil, nil],
-                    [nil, nil, nil, nil, nil, nil],
-                    [nil, nil, nil, nil, nil, nil],
-                    [nil, nil, nil, nil, nil, nil],
-                    [nil, nil, nil, nil, nil, nil],
-                    [nil, nil, nil, nil, nil, nil],
-                    [:red, nil, nil, nil, nil, nil]
+                    [nil, nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil, nil],
+                    [:red, nil, nil, nil, nil, nil, nil]
                   ])
 
       expect { GameState.modify_board_state(0) }
         .to change { GameState.get_game_state }
               .from([
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil],
-                      [:red, nil, nil, nil, nil, nil]
+                      [nil, nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil, nil],
+                      [:red, nil, nil, nil, nil, nil, nil]
                     ])
               .to([
-                    [nil, nil, nil, nil, nil, nil],
-                    [nil, nil, nil, nil, nil, nil],
-                    [nil, nil, nil, nil, nil, nil],
-                    [nil, nil, nil, nil, nil, nil],
-                    [nil, nil, nil, nil, nil, nil],
-                    [:red, nil, nil, nil, nil, nil],
-                    [:red, nil, nil, nil, nil, nil]
+                    [nil, nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil, nil],
+                    [:red, nil, nil, nil, nil, nil, nil],
+                    [:red, nil, nil, nil, nil, nil, nil]
                   ])
-
+      #
       expect { GameState.modify_board_state(2) }
         .to change { GameState.get_game_state }
               .from([
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil],
-                      [:red, nil, nil, nil, nil, nil],
-                      [:red, nil, nil, nil, nil, nil]
+                      [nil, nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil, nil],
+                      [:red, nil, nil, nil, nil, nil, nil],
+                      [:red, nil, nil, nil, nil, nil, nil]
                     ])
               .to([
-                    [nil, nil, nil, nil, nil, nil],
-                    [nil, nil, nil, nil, nil, nil],
-                    [nil, nil, nil, nil, nil, nil],
-                    [nil, nil, nil, nil, nil, nil],
-                    [nil, nil, nil, nil, nil, nil],
-                    [:red, nil, nil, nil, nil, nil],
-                    [:red, nil, :red, nil, nil, nil]
+                    [nil, nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil, nil],
+                    [:red, nil, nil, nil, nil, nil, nil],
+                    [:red, nil, :red, nil, nil, nil, nil]
                   ])
 
     end
@@ -111,22 +116,20 @@ describe GameState do
       expect { GameState.modify_board_state(0) }
         .to change { GameState.get_game_state }
               .from([
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil],
-                      [nil, nil, nil, nil, nil, nil]
+                      [nil, nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil, nil],
+                      [nil, nil, nil, nil, nil, nil, nil]
                     ])
               .to([
-                    [nil, nil, nil, nil, nil, nil],
-                    [nil, nil, nil, nil, nil, nil],
-                    [nil, nil, nil, nil, nil, nil],
-                    [nil, nil, nil, nil, nil, nil],
-                    [nil, nil, nil, nil, nil, nil],
-                    [nil, nil, nil, nil, nil, nil],
-                    [:unicorn, nil, nil, nil, nil, nil]
+                    [nil, nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil, nil],
+                    [nil, nil, nil, nil, nil, nil, nil],
+                    [:unicorn, nil, nil, nil, nil, nil, nil]
                   ])
     end
   end
