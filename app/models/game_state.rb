@@ -69,6 +69,13 @@ class GameState
     end
   end
 
+  def self.vertical_winner
+    get_game_state.transpose.each do |row|
+      return :black if win_row?(row, :black)
+      return :red if win_row?(row, :red)
+    end
+  end
+
   def self.winner_on_row?(row, color)
     counter = 0
     row.each do |slot|
@@ -79,13 +86,6 @@ class GameState
       end
     end
     return color if counter >= 4
-  end
-
-  def self.vertical_winner
-    get_game_state.transpose.each do |row|
-      return :black if win_row?(row, :black)
-      return :red if win_row?(row, :red)
-    end
   end
 
   def self.diagonal_winner
