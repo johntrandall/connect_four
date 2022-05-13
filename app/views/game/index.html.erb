@@ -1,18 +1,26 @@
-<style>
-    table, th, td {
-        border: 1px solid black;
-    }
 
-</style>
 <h1>
   Connect 4
 </h1>
 <h2>
   <%= @message %>
 </h2>
+
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    td {
+        width: 50px;
+        height: 50px;
+        text-align:center
+    }
+</style>
+
 <table>
   <tr class="button-row">
-    <td>
+    <td center>
       <%= button_to("drop", chits_path(column_num: 0)) unless GameState.column_full?(0) %>
     </td>
     <td>
@@ -35,15 +43,24 @@
     </td>
   </tr>
 
+  <style>
+      tr.gameboard-row td span.chit {
+          height: 50px;
+          width: 50px;
+          /*background-color: grey;*/
+          border-radius: 50%;
+          display: inline-block;
+      }
+  </style>
   <% @board_state.each do |row| %>
     <tr class="gameboard-row">
-      <td><%= row[0] %></td>
-      <td><%= row[1] %></td>
-      <td><%= row[2] %></td>
-      <td><%= row[3] %></td>
-      <td><%= row[4] %></td>
-      <td><%= row[5] %></td>
-      <td><%= row[6] %></td>
+      <td><span class="chit" style="background-color: <%= row[0] %>"></span></td>
+      <td><span class="chit" style="background-color: <%= row[1] %>"></span></td>
+      <td><span class="chit" style="background-color: <%= row[2] %>"></span></td>
+      <td><span class="chit" style="background-color: <%= row[3] %>"></span></td>
+      <td><span class="chit" style="background-color: <%= row[4] %>"></span></td>
+      <td><span class="chit" style="background-color: <%= row[5] %>"></span></td>
+      <td><span class="chit" style="background-color: <%= row[6] %>"></span></td>
     </tr>
   <% end %>
 
