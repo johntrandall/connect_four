@@ -10,7 +10,23 @@ class GameState
   ]
 
   def self.game_state
-    @@game_state
+    Rails.cache.fetch (:game_state) do
+      [
+        [nil, nil, nil, nil, nil, nil],
+        [nil, nil, nil, nil, nil, nil],
+        [nil, nil, nil, nil, nil, nil],
+        [nil, nil, nil, nil, nil, nil],
+        [nil, nil, nil, nil, nil, nil],
+        [nil, nil, nil, nil, nil, nil],
+        [nil, nil, nil, nil, nil, nil]
+      ]
+    end
+  end
+
+  def self.patch_game_state(row_num, col_num, current_player)
+    gs_nested_array = self.game_state
+    gs_nested_array[row_num][col_num] = current_player
+    Rails.cache.write(:game_state, gs_nested_array)
   end
 
   def self.get_current_player
@@ -31,7 +47,7 @@ class GameState
         deepest_nil_row = i
       end
     end
-    game_state[deepest_nil_row][column_num] = get_current_player
+    self.patch_game_state(deepest_nil_row, column_num, get_current_player)
   end
 
   def self.flip_player
