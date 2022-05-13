@@ -191,69 +191,63 @@ describe GameState do
   describe 'private' do
     describe '#diagonal_winner' do
       it 'returns nil if there is no diagonal winner' do
-        allow(GameState).to receive(:get_game_state).and_return(
-          [
-            [nil, nil, nil, nil, nil, nil, nil],
-            [nil, nil, nil, nil, nil, nil, nil],
-            [nil, nil, nil, nil, nil, nil, nil],
-            [:red, nil, nil, nil, nil, nil, nil],
-            [nil, :red, nil, nil, nil, nil, nil],
-            [nil, nil, :red, nil, nil, nil, nil]
-          ]
-        )
-        expect(GameState.diagonal_winner).to eq nil
+        game_state = [
+          [nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil],
+          [:red, nil, nil, nil, nil, nil, nil],
+          [nil, :red, nil, nil, nil, nil, nil],
+          [nil, nil, :red, nil, nil, nil, nil]
+        ]
+
+        expect(GameState.diagonal_winner(game_state)).to eq nil
       end
 
       it 'returns the winner if there is a diagonal down_right winner' do
-        allow(GameState).to receive(:get_game_state).and_return(
-          [
-            [nil, nil, nil, nil, nil, nil, nil],
-            [nil, nil, nil, nil, nil, nil, nil],
-            [:red, nil, nil, nil, nil, nil, nil],
-            [nil, :red, nil, nil, nil, nil, nil],
-            [nil, nil, :red, nil, nil, nil, nil],
-            [nil, nil, nil, :red, nil, nil, nil]
-          ]
-        )
-        expect(GameState.diagonal_winner).to eq :red
+        game_state = [
+          [nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil],
+          [:red, nil, nil, nil, nil, nil, nil],
+          [nil, :red, nil, nil, nil, nil, nil],
+          [nil, nil, :red, nil, nil, nil, nil],
+          [nil, nil, nil, :red, nil, nil, nil]
+        ]
 
-        allow(GameState).to receive(:get_game_state).and_return(
-          [
-            [nil, nil, nil, :red, nil, nil, nil],
-            [nil, nil, nil, nil, :red, nil, nil],
-            [nil, nil, nil, nil, nil, :red, nil],
-            [nil, nil, nil, nil, nil, nil, :red],
-            [nil, nil, nil, nil, nil, nil, nil],
-            [nil, nil, nil, nil, nil, nil, nil]
-          ]
-        )
-        expect(GameState.diagonal_winner).to eq :red
+        expect(GameState.diagonal_winner(game_state)).to eq :red
+
+        game_state = [
+          [nil, nil, nil, :red, nil, nil, nil],
+          [nil, nil, nil, nil, :red, nil, nil],
+          [nil, nil, nil, nil, nil, :red, nil],
+          [nil, nil, nil, nil, nil, nil, :red],
+          [nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil]
+        ]
+
+        expect(GameState.diagonal_winner(game_state)).to eq :red
       end
 
       it 'returns the winner if there is a diagonal up_right winner' do
-        expect(GameState).to receive(:get_game_state).and_return(
-          [
-            [nil, nil, nil, :black, nil, nil, nil],
-            [nil, nil, :black, nil, nil, nil, nil],
-            [nil, :black, nil, nil, nil, nil, nil],
-            [:black, nil, nil, nil, nil, nil, nil],
-            [nil, nil, nil, nil, nil, nil, nil],
-            [nil, nil, nil, nil, nil, nil, nil],
-          ]
-        )
-        expect(GameState.diagonal_winner).to eq :black
+        game_state = [
+          [nil, nil, nil, :black, nil, nil, nil],
+          [nil, nil, :black, nil, nil, nil, nil],
+          [nil, :black, nil, nil, nil, nil, nil],
+          [:black, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil],
+        ]
 
-        expect(GameState).to receive(:get_game_state).and_return(
-          [
-            [nil, nil, nil, nil, nil, nil, nil],
-            [nil, nil, nil, nil, nil, nil, nil],
-            [nil, nil, nil, nil, nil, nil, :black],
-            [nil, nil, nil, nil, nil, :black, nil],
-            [nil, nil, nil, nil, :black, nil, nil],
-            [nil, nil, nil, :black, nil, nil, nil],
-          ]
-        )
-        expect(GameState.diagonal_winner).to eq :black
+        expect(GameState.diagonal_winner(game_state)).to eq :black
+
+        game_state = [
+          [nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, :black],
+          [nil, nil, nil, nil, nil, :black, nil],
+          [nil, nil, nil, nil, :black, nil, nil],
+          [nil, nil, nil, :black, nil, nil, nil],
+        ]
+        expect(GameState.diagonal_winner(game_state)).to eq :black
       end
     end
 

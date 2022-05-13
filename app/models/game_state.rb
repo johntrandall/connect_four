@@ -40,7 +40,8 @@ class GameState
   end
 
   def self.winner?
-    horizontal_winner || vertical_winner || diagonal_winner
+    game_state = get_game_state
+    horizontal_winner(game_state) || vertical_winner(game_state) || diagonal_winner(game_state)
   end
 
   def self.draw?
@@ -61,15 +62,15 @@ class GameState
     Rails.cache.write(:get_game_state, gs_nested_array)
   end
 
-  def self.horizontal_winner
-    get_game_state.each do |row|
+  def self.horizontal_winner(game_state)
+    game_state.each do |row|
       return :black if winner_on_row?(row, :black)
       return :red if winner_on_row?(row, :red)
     end
   end
 
-  def self.vertical_winner
-    get_game_state.transpose.each do |row|
+  def self.vertical_winner(game_state)
+    game_state.transpose.each do |row|
       return :black if win_row?(row, :black)
       return :red if win_row?(row, :red)
     end
@@ -87,8 +88,7 @@ class GameState
     return color if counter >= 4
   end
 
-  def self.diagonal_winner
-    game_state = get_game_state
+  def self.diagonal_winner(game_state)
     down_right_diagonal_win_start_points = [
       [0, 0],
       [0, 1],
