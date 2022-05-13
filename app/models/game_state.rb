@@ -1,20 +1,30 @@
 class GameState
+
+  STARTING_GAME_STATE = [
+    [nil, nil, nil, nil, nil, nil, nil],
+    [nil, nil, nil, nil, nil, nil, nil],
+    [nil, nil, nil, nil, nil, nil, nil],
+    [nil, nil, nil, nil, nil, nil, nil],
+    [nil, nil, nil, nil, nil, nil, nil],
+    [nil, nil, nil, nil, nil, nil, nil]
+  ]
+
+  STARTING_PLAYER = :red
+
+  def self.reset
+    Rails.cache.write(:current_player, STARTING_PLAYER)
+    Rails.cache.write(:get_game_state, STARTING_GAME_STATE)
+  end
+
   def self.get_game_state
     Rails.cache.fetch (:get_game_state) do
-      [
-        [nil, nil, nil, nil, nil, nil, nil],
-        [nil, nil, nil, nil, nil, nil, nil],
-        [nil, nil, nil, nil, nil, nil, nil],
-        [nil, nil, nil, nil, nil, nil, nil],
-        [nil, nil, nil, nil, nil, nil, nil],
-        [nil, nil, nil, nil, nil, nil, nil]
-      ]
+      STARTING_GAME_STATE
     end
   end
 
   def self.get_current_player
     Rails.cache.fetch (:current_player) do
-      :red
+      STARTING_PLAYER
     end
   end
 

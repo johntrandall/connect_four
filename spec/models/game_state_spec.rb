@@ -192,7 +192,7 @@ describe GameState do
     pending("TODO - write tests")
   end
 
-  describe "column_full?" do
+  describe ".column_full?" do
     it "returns true/false accurately" do
       allow(GameState)
         .to receive(:get_game_state)
@@ -207,6 +207,30 @@ describe GameState do
       expect(GameState.column_full?(0)).to eq false
       expect(GameState.column_full?(1)).to eq true
       expect(GameState.column_full?(2)).to eq false
+    end
+  end
+
+  describe '.reset?' do
+    it 'resets the board' do
+      GameState.modify_board_state(2)
+      expect { GameState.reset }.to change {
+        GameState.get_game_state }
+                                      .from([
+                                              [nil, nil, nil, nil, nil, nil, nil],
+                                              [nil, nil, nil, nil, nil, nil, nil],
+                                              [nil, nil, nil, nil, nil, nil, nil],
+                                              [nil, nil, nil, nil, nil, nil, nil],
+                                              [nil, nil, nil, nil, nil, nil, nil],
+                                              [nil, nil, :red, nil, nil, nil, nil],
+                                            ])
+                                      .to([
+                                            [nil, nil, nil, nil, nil, nil, nil],
+                                            [nil, nil, nil, nil, nil, nil, nil],
+                                            [nil, nil, nil, nil, nil, nil, nil],
+                                            [nil, nil, nil, nil, nil, nil, nil],
+                                            [nil, nil, nil, nil, nil, nil, nil],
+                                            [nil, nil, nil, nil, nil, nil, nil],
+                                          ])
     end
   end
 

@@ -1,4 +1,4 @@
-class GameController < ApplicationController
+class GamesController < ApplicationController
 
   def index
     @game_state = GameState
@@ -10,6 +10,11 @@ class GameController < ApplicationController
                elsif GameState.draw?
                  "Draw!"
                end
+  end
+
+  def reset
+    GameState.reset
+    redirect_to(root_path)
   end
 end
 

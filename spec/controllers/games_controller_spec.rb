@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe GameController do
+describe GamesController do
   describe '#index' do
     it 'renders' do
       expect(GameState).to receive(:winner?)
@@ -47,6 +47,14 @@ describe GameController do
           expect(response).to be_successful
         end
       end
+    end
+  end
+
+  describe '#reset' do
+    it 'calls reset on Game state and redirects to index' do
+      expect(GameState).to receive(:reset)
+      post :reset
+      expect(response).to redirect_to(root_path)
     end
   end
 end

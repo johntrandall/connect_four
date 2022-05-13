@@ -3,7 +3,12 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
 
-  root "game#index"
+  root "games#index"
 
   resources :chits, only: [:create] # goes to index?
+  resource :game, only: [:index] do
+    collection do
+      post 'reset'
+    end
+  end
 end

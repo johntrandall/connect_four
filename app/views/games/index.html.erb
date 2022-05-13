@@ -1,10 +1,12 @@
-
 <h1>
   Connect 4
 </h1>
 <h2>
   <%= @message %>
 </h2>
+
+
+
 
 <style>
     table, th, td {
@@ -14,7 +16,7 @@
     td {
         width: 50px;
         height: 50px;
-        text-align:center
+        text-align: center
     }
 </style>
 
@@ -65,3 +67,9 @@
   <% end %>
 
 </table>
+
+<br>
+<br>
+<br>
+
+<%= button_to "reset game", reset_game_path %>
