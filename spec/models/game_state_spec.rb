@@ -188,7 +188,38 @@ describe GameState do
     end
   end
 
+  describe ".draw?" do
+    pending("TODO - write tests")
+  end
+
   describe 'private' do
+
+    describe '#horizontal_winner' do
+      it 'returns nil if there is no horizontal winner' do
+        game_state = [
+          [nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil],
+          [:black, nil, nil, nil, nil, nil, nil],
+          [:red, nil, nil, nil, nil, nil, nil],
+          [:black, :black, :black, nil, nil, nil, nil],
+          [:red, :red, :red, nil, nil, nil, nil]
+        ]
+        expect(GameState.horizontal_winner(game_state)).to eq nil
+      end
+
+      it 'returns the color if there is a horizontal winner' do
+        game_state = [
+          [nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil],
+          [:black, nil, nil, nil, nil, nil, nil],
+          [:red, nil, nil, nil, nil, nil, nil],
+          [:black, :black, :black, nil, nil, nil, nil],
+          [:red, :red, :red, :red, nil, nil, nil]
+        ]
+        expect(GameState.horizontal_winner(game_state)).to eq :red
+      end
+    end
+
     describe '#diagonal_winner' do
       it 'returns nil if there is no diagonal winner' do
         game_state = [

@@ -46,7 +46,7 @@ class GameState
 
   def self.draw?
     game_state = get_game_state
-    return false if game_state.flatten.include?(0)
+    return false if game_state.flatten.include?(nil)
     return true
   end
 
@@ -68,13 +68,15 @@ class GameState
       return :black if winner_on_row?(row, :black)
       return :red if winner_on_row?(row, :red)
     end
+    nil
   end
 
   def self.vertical_winner(game_state)
     game_state.transpose.each do |row|
-      return :black if win_row?(row, :black)
-      return :red if win_row?(row, :red)
+      return :black if self.winner_on_row?(row, :black)
+      return :red if self.winner_on_row?(row, :red)
     end
+    nil
   end
 
   def self.winner_on_row?(row, color)
@@ -85,8 +87,9 @@ class GameState
       else
         counter = 0
       end
+      return color if counter >= 4
     end
-    return color if counter >= 4
+    nil
   end
 
   def self.diagonal_winner(game_state)
@@ -135,18 +138,18 @@ class GameState
 
   def self.win_down_right_from_here?(x, y, color, game_state)
     if game_state[x][y] == color &&
-      game_state[x+1][y+1] == color &&
-      game_state[x+2][y+2] == color &&
-      game_state[x+3][y+3] == color
+      game_state[x + 1][y + 1] == color &&
+      game_state[x + 2][y + 2] == color &&
+      game_state[x + 3][y + 3] == color
       return true
     end
   end
 
   def self.win_up_right_from_here?(x, y, color, game_state)
     if game_state[x][y] == color &&
-      game_state[x-1][y+1] == color &&
-      game_state[x-2][y+2] == color &&
-      game_state[x-3][y+3] == color
+      game_state[x - 1][y + 1] == color &&
+      game_state[x - 2][y + 2] == color &&
+      game_state[x - 3][y + 3] == color
       return true
     end
   end

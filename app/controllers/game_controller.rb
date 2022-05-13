@@ -9,7 +9,6 @@ class GameController < ApplicationController
                elsif GameState.draw?
                  "Draw!"
                end
-
   end
 end
 
