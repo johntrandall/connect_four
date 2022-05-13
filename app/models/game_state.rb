@@ -1,16 +1,6 @@
 class GameState
-  @@game_state = [
-    [nil, nil, nil, nil, nil, nil],
-    [nil, nil, nil, nil, nil, nil],
-    [nil, nil, nil, nil, nil, nil],
-    [nil, nil, nil, nil, nil, nil],
-    [nil, nil, nil, nil, nil, nil],
-    [nil, nil, nil, nil, nil, nil],
-    [nil, nil, nil, nil, nil, nil]
-  ]
-
-  def self.game_state
-    Rails.cache.fetch (:game_state) do
+  def self.get_game_state
+    Rails.cache.fetch (:get_game_state) do
       [
         [nil, nil, nil, nil, nil, nil],
         [nil, nil, nil, nil, nil, nil],
@@ -24,9 +14,9 @@ class GameState
   end
 
   def self.patch_game_state(row_num, col_num, current_player)
-    gs_nested_array = self.game_state
+    gs_nested_array = self.get_game_state
     gs_nested_array[row_num][col_num] = current_player
-    Rails.cache.write(:game_state, gs_nested_array)
+    Rails.cache.write(:get_game_state, gs_nested_array)
   end
 
   def self.get_current_player
@@ -42,7 +32,7 @@ class GameState
 
   def self.modify_board_state(column_num)
     deepest_nil_row = nil
-    game_state.each_with_index do |row, i|
+    get_game_state.each_with_index do |row, i|
       if row[column_num].nil?
         deepest_nil_row = i
       end
@@ -73,7 +63,7 @@ class GameState
   private
 
   def self.horizontal_winner
-    game_state.each do |row|
+    get_game_state.each do |row|
       return :black if winner_on_row?(row, :black)
       return :red if winner_on_row?(row, :red)
     end
@@ -92,7 +82,7 @@ class GameState
   end
 
   def self.vertical_winner
-    game_state.transpose.each do |row|
+    get_game_state.transpose.each do |row|
       return :black if win_row?(row, :black)
       return :red if win_row?(row, :red)
     end

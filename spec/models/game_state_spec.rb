@@ -26,8 +26,8 @@ describe GameState do
   describe "starting state" do
     describe ".game_state" do
       it 'returns an array with nothing in it' do
-        expect(GameState.game_state).to be_a(Array)
-        expect(GameState.game_state.flatten.compact).to eq([])
+        expect(GameState.get_game_state).to be_a(Array)
+        expect(GameState.get_game_state.flatten.compact).to eq([])
       end
     end
 
@@ -41,7 +41,7 @@ describe GameState do
   describe ".modify_board_state" do
     it 'modifies game state by dropping a chit in the column and respecting gravity' do
       expect { GameState.modify_board_state(0) }
-        .to change { GameState.game_state }
+        .to change { GameState.get_game_state }
               .from([
                       [nil, nil, nil, nil, nil, nil],
                       [nil, nil, nil, nil, nil, nil],
@@ -62,7 +62,7 @@ describe GameState do
                   ])
 
       expect { GameState.modify_board_state(0) }
-        .to change { GameState.game_state }
+        .to change { GameState.get_game_state }
               .from([
                       [nil, nil, nil, nil, nil, nil],
                       [nil, nil, nil, nil, nil, nil],
@@ -83,7 +83,7 @@ describe GameState do
                   ])
 
       expect { GameState.modify_board_state(2) }
-        .to change { GameState.game_state }
+        .to change { GameState.get_game_state }
               .from([
                       [nil, nil, nil, nil, nil, nil],
                       [nil, nil, nil, nil, nil, nil],
@@ -109,7 +109,7 @@ describe GameState do
       expect(GameState).to receive(:get_current_player).and_return(:unicorn)
 
       expect { GameState.modify_board_state(0) }
-        .to change { GameState.game_state }
+        .to change { GameState.get_game_state }
               .from([
                       [nil, nil, nil, nil, nil, nil],
                       [nil, nil, nil, nil, nil, nil],
